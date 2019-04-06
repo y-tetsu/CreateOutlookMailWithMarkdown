@@ -92,6 +92,7 @@ Function Parse(lines As Variant) As String
                 Parse = Parse & lines(i)
             End If
             
+            ' Output Normal Line
             If state = "normal_line" Then
                 ' ---
                 re.Pattern = "^---$"
@@ -184,9 +185,10 @@ Function Parse(lines As Variant) As String
                     Parse = Parse & lines(i) & "<br>"
                 End If
             End If
-            
+        
+        ' Output Syntax Line
         ElseIf state = "syntax_line" Then
-            ' End of Syntax Highlight
+            ' Check End of Syntax Highlight
             re.Pattern = "^```$"
             
             If re.Test(lines(i)) Then
