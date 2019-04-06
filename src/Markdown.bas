@@ -15,7 +15,7 @@ Function Parse(lines As Variant) As String
     Dim code_lines As Variant
     Dim buffer As String
     Dim python_code As Boolean
-    Dim plane_code As Boolean
+    Dim simple_code As Boolean
     Dim skip_flag As Boolean
     Dim tmp As String
     Dim i As Long
@@ -63,19 +63,19 @@ Function Parse(lines As Variant) As String
                 Parse = Parse & lines(i)
             End If
             
-            ' Plane Syntax
+            ' Simple Syntax
             re.Pattern = "^```$"
             
             If re.Test(lines(i)) Then
-                plane_code = True
+                simple_code = True
                 state = "syntax_line"
             End If
             
-            ' Plane Syntax with Text
+            ' Simple Syntax with Text
             re.Pattern = "^``` (.*)$"
             
             If re.Test(lines(i)) Then
-                plane_code = True
+                simple_code = True
                 state = "syntax_line"
                 
                 tmp = re.Replace(lines(i), "$1")
@@ -202,9 +202,9 @@ Function Parse(lines As Variant) As String
                 If python_code Then
                     Parse = Parse & LineArrange.AddBrTag(PythonSyntax.HighLight(ReplaceSpace(code_lines)))
                     python_code = False
-                ElseIf plane_code Then
+                ElseIf simple_code Then
                     Parse = Parse & LineArrange.AddBrTag(LineArrange.ReplaceSpace(code_lines))
-                    plane_code = False
+                    simple_code = False
                 End If
                 
                 Parse = Parse & "</div>"
