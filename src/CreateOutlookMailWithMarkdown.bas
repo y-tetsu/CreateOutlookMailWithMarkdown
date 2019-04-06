@@ -8,24 +8,32 @@ Option Explicit
 '---------------------------------------------------------------------------------
 ' Display
 '---------------------------------------------------------------------------------
-Sub Display(fontName As String, fontSize As String, sheetName As String, toCell As String, ccCell As String, bccCell As String, subjectCell As String, greetingCell As String, bodyCell As String, signatureCell As String)
-    Dim address_to As String
-    Dim address_cc As String
-    Dim address_bcc As String
+Sub Display(sheetName As String, fontnameCell As String, fontsizeCell As String, toCell As String, ccCell As String, bccCell As String, subjectCell As String, greetingCell As String, bodyCell As String, signatureCell As String)
+    Dim fontName As String
+    Dim fontSize As String
+    Dim addressTo As String
+    Dim addressCc As String
+    Dim addressBcc As String
     Dim subject As String
     Dim greeting As Variant
     Dim body As Variant
     Dim signature As Variant
-    Dim htmlbody As Variant
+    Dim htmlBody As Variant
+    
+    ' Get Font Name
+    fontName = GetCellValue(sheetName, fontnameCell)
+    
+    ' Get Font Size
+    fontSize = GetCellValue(sheetName, fontsizeCell)
     
     ' Get To
-    address_to = GetCellValue(sheetName, toCell)
-    
+    addressTo = GetCellValue(sheetName, toCell)
+
     ' Get Cc
-    address_cc = GetCellValue(sheetName, ccCell)
+    addressCc = GetCellValue(sheetName, ccCell)
     
     ' Get Bcc
-    address_bcc = GetCellValue(sheetName, bccCell)
+    addressBcc = GetCellValue(sheetName, bccCell)
     
     ' Get Subject
     subject = GetCellValue(sheetName, subjectCell)
@@ -40,10 +48,10 @@ Sub Display(fontName As String, fontSize As String, sheetName As String, toCell 
     signature = Split(GetCellValue(sheetName, signatureCell), vbLf)
     
     ' Create HTML Body
-    htmlbody = CreateHtmlBody(fontSize, fontName, greeting, body, signature)
+    htmlBody = CreateHtmlBody(fontSize, fontName, greeting, body, signature)
 
     ' Display Mail
-    Call DisplayMail(address_to, address_cc, address_bcc, subject, htmlbody)
+    Call DisplayMail(addressTo, addressCc, addressBcc, subject, htmlBody)
 End Sub
 
 
@@ -63,7 +71,7 @@ End Function
 '---------------------------------------------------------------------------------
 ' Display Mail
 '---------------------------------------------------------------------------------
-Sub DisplayMail(address_to As String, address_cc As String, address_bcc As String, subject As String, htmlbody As Variant)
+Sub DisplayMail(addressTo As String, addressCc As String, addressBcc As String, subject As String, htmlBody As Variant)
     Dim OutlookApp As Object
     Dim OutlookMail As Object
     On Error Resume Next
@@ -72,11 +80,11 @@ Sub DisplayMail(address_to As String, address_cc As String, address_bcc As Strin
     Set OutlookMail = OutlookApp.CreateItem(0)
     
     With OutlookMail
-        .to = address_to
-        .CC = address_cc
-        .BCC = address_bcc
+        .to = addressTo
+        .CC = addressCc
+        .BCC = addressBcc
         .subject = subject
-        .htmlbody = htmlbody
+        .htmlBody = htmlBody
         .Display
     End With
     
