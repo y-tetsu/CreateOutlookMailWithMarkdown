@@ -15,7 +15,7 @@ Function Parse(lines As Variant) As String
     Dim code_lines As Variant
     Dim buffer As String
     Dim python_code As Boolean
-    Dim command_line As Boolean
+    Dim plane_code As Boolean
     Dim skip_flag As Boolean
     Dim tmp As String
     Dim i As Long
@@ -63,19 +63,19 @@ Function Parse(lines As Variant) As String
                 Parse = Parse & lines(i)
             End If
             
-            ' Commandline Syntax
+            ' Plane Syntax
             re.Pattern = "^```$"
             
             If re.Test(lines(i)) Then
-                command_line = True
+                plane_code = True
                 state = "syntax_line"
             End If
             
-            ' Commandline Syntax with Text
+            ' Plane Syntax with Text
             re.Pattern = "^``` (.*)$"
             
             If re.Test(lines(i)) Then
-                command_line = True
+                plane_code = True
                 state = "syntax_line"
                 
                 tmp = re.Replace(lines(i), "$1")
@@ -93,9 +93,9 @@ Function Parse(lines As Variant) As String
             End If
             
             If state = "normal_line" Then
+                ' ---
                 re.Pattern = "^---$"
                 
-                ' ---
                 If re.Test(lines(i)) Then
                     Parse = Parse & "<p><hr></p>"
                     
@@ -186,6 +186,7 @@ Function Parse(lines As Variant) As String
             End If
             
         ElseIf state = "syntax_line" Then
+            ' End of Syntax Highlight
             re.Pattern = "^```$"
             
             If re.Test(lines(i)) Then
@@ -199,9 +200,9 @@ Function Parse(lines As Variant) As String
                 If python_code Then
                     Parse = Parse & LineArrange.AddBrTag(PythonSyntax.HighLight(ReplaceSpace(code_lines)))
                     python_code = False
-                ElseIf command_line Then
+                ElseIf plane_code Then
                     Parse = Parse & LineArrange.AddBrTag(LineArrange.ReplaceSpace(code_lines))
-                    command_line = False
+                    plane_code = False
                 End If
                 
                 Parse = Parse & "</div>"
