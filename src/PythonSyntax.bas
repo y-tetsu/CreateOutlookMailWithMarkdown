@@ -18,7 +18,10 @@ Const PYTHON_SYNTAX2 = "from|import"
 Function HighLight(lines As Variant) As Variant
     Dim line As Variant
     Dim i As Long
-    Dim tmp1, tmp2, code, comment As String
+    Dim tmp1 As String
+    Dim tmp2 As String
+    Dim code As String
+    Dim comment As String
     Dim tdquote, tsquote As Boolean
     Dim re
     Dim index As Long

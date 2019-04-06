@@ -102,7 +102,6 @@ Function Parse(lines As Variant) As String
                     skip_flag = True
                 End If
                 
-                
                 ' # <string>
                 re.Pattern = "^# (.*)$"
                 
