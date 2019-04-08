@@ -80,7 +80,7 @@ Sub DisplayMail(addressTo As String, addressCc As String, addressBcc As String, 
     Set OutlookMail = OutlookApp.CreateItem(0)
     
     With OutlookMail
-        .to = addressTo
+        .TO = addressTo
         .CC = addressCc
         .BCC = addressBcc
         .subject = subject
