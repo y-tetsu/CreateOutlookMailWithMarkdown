@@ -182,7 +182,9 @@ Function Parse(lines As Variant) As String
                 End If
                 
                 If Not skip_flag Then
-                    Parse = Parse & lines(i) & "<br>"
+                    Dim tmp_lines(0) As Variant
+                    tmp_lines(0) = lines(i)
+                    Parse = Parse & LineArrange.AddBrTag(LineArrange.ReplaceSpace(tmp_lines))
                 End If
             End If
         
